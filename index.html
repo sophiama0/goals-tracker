@@ -33,7 +33,7 @@
   .heat div { width: 14px; height: 14px; border-radius: 3px; background: var(--border); }
   .heat div.hit { background: var(--good); }
   .heat div.miss { background: var(--bad); }
-  .heat div.future { background: transparent; }
+  .heat div.prog { background: var(--accent); opacity: .5; }
   .heatlbl { color: var(--dim); font-size: .75rem; }
   .goals { white-space: pre-wrap; line-height: 1.7; }
   a { color: var(--accent); }
@@ -53,7 +53,7 @@
 
 <h2>Last 10 weeks</h2>
 <div class="heat" id="heat"></div>
-<div class="heatlbl">green = goals hit &nbsp;·&nbsp; red = missed &nbsp;·&nbsp; grey = no entry</div>
+<div class="heatlbl">green = goals hit &nbsp;·&nbsp; red = missed &nbsp;·&nbsp; blue = in progress &nbsp;·&nbsp; grey = no entry</div>
 
 <h2>Daily grid</h2>
 <div id="grid">Loading…</div>
@@ -70,13 +70,24 @@ async function load() {
     fetch('GOALS.md').then(r => r.text()).catch(() => ''),
   ]);
 
-  const rows = tracker.split('\n')
+  const lines = tracker.split('\n')
     .filter(l => l.trim().startsWith('|'))
-    .map(l => l.split('|').slice(1, -1).map(c => c.trim()))
-    .filter(c => c.length >= 6 && c[0] !== 'Date' && !/^[-\s|]+$/.test(c[0]))
-    .map(c => ({ date: c[0], exercise: c[1], food: c[2], kcal: c[3], work: c[4], hit: c[5] }));
+    .map(l => l.split('|').slice(1, -1).map(c => c.trim()));
+  const hi = lines.findIndex(c => /date/i.test(c[0]));
+  const headers = hi >= 0 ? lines[hi] : [];
+  const keys = headers.map(h => {
+    h = h.toLowerCase();
+    if (/date/.test(h)) return 'date';
+    if (/kcal/.test(h)) return 'kcal';
+    if (/goal|hit/.test(h)) return 'hit';
+    return h.replace(/[^a-z]/g, '');
+  });
+  const hitIdx = keys.indexOf('hit');
 
-  const real = rows.filter(r => ![r.exercise, r.food, r.kcal, r.work].every(v => DASH.test(v)));
+  const real = lines.slice(hi + 1)
+    .filter(c => c.length && !/^[-\s|]+$/.test(c[0]))
+    .map(c => Object.fromEntries(c.map((v, i) => [keys[i] || 'col' + i, v])))
+    .filter(r => r.date && keys.some(k => k !== 'date' && !DASH.test(r[k] ?? '')));
   const byDate = Object.fromEntries(real.map(r => [r.date, r]));
 
   // stats
@@ -101,7 +112,7 @@ async function load() {
   for (let cur = new Date(start); cur <= today; cur.setDate(cur.getDate() + 1)) {
     const cell = document.createElement('div');
     const r = byDate[iso(cur)];
-    if (r) cell.className = r.hit.includes('✅') ? 'hit' : (/❌/.test(r.hit) ? 'miss' : '');
+    if (r) cell.className = r.hit.includes('✅') ? 'hit' : (/❌/.test(r.hit) ? 'miss' : 'prog');
     cell.title = iso(cur) + (r ? ` — ${r.exercise} / ${r.kcal} kcal` : ' — no entry');
     heat.appendChild(cell);
   }
@@ -109,9 +120,13 @@ async function load() {
   // table
   if (!real.length) { document.getElementById('grid').innerHTML = '<p class="sub">No entries yet.</p>'; }
   else {
-    document.getElementById('grid').innerHTML = '<table><tr><th>Date</th><th>Exercise</th><th>Food</th><th>~kcal</th><th>Work / Study</th><th>Goals</th></tr>' +
-      real.map(r => `<tr><td>${r.date}</td><td>${r.exercise}</td><td>${r.food}</td><td>${r.kcal}</td><td>${r.work}</td><td class="${r.hit.includes('✅')?'hit':(/❌/.test(r.hit)?'miss':'')}">${r.hit}</td></tr>`).join('') +
-      '</table>';
+    document.getElementById('grid').innerHTML = '<table><tr>' +
+      headers.map(h => `<th>${h}</th>`).join('') + '</tr>' +
+      real.map(r => '<tr>' + keys.map((k, i) => {
+        const v = r[k] ?? '';
+        const cls = i === hitIdx ? (v.includes('✅') ? 'hit' : (/❌/.test(v) ? 'miss' : '')) : '';
+        return `<td class="${cls}">${v}</td>`;
+      }).join('') + '</tr>').join('') + '</table>';
   }
 
   // goals: show bullet lines only
