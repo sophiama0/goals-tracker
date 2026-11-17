@@ -4,7 +4,7 @@ One row per day. Newest on top. The agent fills this in from my texts.
 
 | Date | Exercise | Food | ~kcal | Alcohol | Work / Study | Goals hit |
 |------|----------|------|-------|---------|--------------|-----------|
-| 2026-11-17 | — | Breakfast: 2 soy sauce eggs on toast, large hot latte with whole milk (Greenberry's); Lunch: 1 cup orange chicken (Trader Joe's), 1 cup green grapes; Snack: pita bread with 2 tbsp Greek yogurt | ~1205 | 0 | — | ⏳ in progress |
+| 2026-11-17 | spin class 60 min, 9k steps | Breakfast: 2 soy sauce eggs on toast, large hot latte with whole milk (Greenberry's); Lunch: 1 cup orange chicken (Trader Joe's), 1 cup green grapes; Snack: pita bread with 2 tbsp Greek yogurt | ~1205 | 0 | — | ⏳ in progress (moved ✔, kcal TBD) |
 
 ## Legend
 
