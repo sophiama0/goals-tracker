@@ -4,7 +4,7 @@ One row per day. Newest on top. The agent fills this in from my texts.
 
 | Date | Exercise | Food | ~kcal | Alcohol | Work / Study | Goals hit |
 |------|----------|------|-------|---------|--------------|-----------|
-| 2026-11-17 | — | — | — | — | — | — |
+| 2026-11-17 | — | Breakfast: 2 soy sauce eggs on toast, large hot latte with whole milk (Greenberry's) | ~590 | 0 | — | ⏳ in progress |
 
 ## Legend
 
