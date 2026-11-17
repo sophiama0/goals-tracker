@@ -23,3 +23,7 @@ When the user texts you what they did and ate today:
 6. Commit the log entry with a message like `log: 2026-11-17` and push.
 
 Keep replies short — this is a text conversation, not a report.
+
+Keep the `TRACKER.md` table format stable (Date | Exercise | Food | ~kcal |
+Work / Study | Goals hit, newest first) — the GitHub Pages site parses it
+directly, so it must stay machine-readable.

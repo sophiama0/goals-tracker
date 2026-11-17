@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Goals Tracker</title>
+<style>
+  :root {
+    --bg: #0d1117; --card: #161b22; --border: #30363d;
+    --text: #e6edf3; --dim: #8b949e;
+    --good: #3fb950; --bad: #f85149; --accent: #58a6ff;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body {
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg); color: var(--text);
+    max-width: 900px; margin: 0 auto; padding: 24px 16px 64px;
+  }
+  h1 { font-size: 1.5rem; margin-bottom: 4px; }
+  .sub { color: var(--dim); font-size: .85rem; margin-bottom: 24px; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap: 12px; margin-bottom: 28px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+  .card .num { font-size: 1.6rem; font-weight: 700; }
+  .card .lbl { color: var(--dim); font-size: .75rem; text-transform: uppercase; letter-spacing: .05em; }
+  h2 { font-size: 1rem; margin: 28px 0 12px; }
+  table { width: 100%; border-collapse: collapse; font-size: .85rem; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th { color: var(--dim); font-size: .7rem; text-transform: uppercase; letter-spacing: .05em; }
+  tr:hover td { background: rgba(88,166,255,.05); }
+  .hit { color: var(--good); font-weight: 600; }
+  .miss { color: var(--bad); font-weight: 600; }
+  .heat { display: grid; grid-template-rows: repeat(7, 14px); grid-auto-flow: column; gap: 3px; margin-bottom: 8px; }
+  .heat div { width: 14px; height: 14px; border-radius: 3px; background: var(--border); }
+  .heat div.hit { background: var(--good); }
+  .heat div.miss { background: var(--bad); }
+  .heat div.future { background: transparent; }
+  .heatlbl { color: var(--dim); font-size: .75rem; }
+  .goals { white-space: pre-wrap; line-height: 1.7; }
+  a { color: var(--accent); }
+  .err { color: var(--bad); padding: 12px 0; }
+</style>
+</head>
+<body>
+<h1>Goals Tracker</h1>
+<p class="sub">Auto-updates from <a href="https://github.com/sophiama0/goals-tracker">sophiama0/goals-tracker</a> every time the agent logs an entry.</p>
+
+<div class="cards">
+  <div class="card"><div class="num" id="streak">–</div><div class="lbl">Day streak</div></div>
+  <div class="card"><div class="num" id="days">–</div><div class="lbl">Days logged</div></div>
+  <div class="card"><div class="num" id="hitpct">–</div><div class="lbl">Goals hit</div></div>
+  <div class="card"><div class="num" id="avgkcal">–</div><div class="lbl">Avg kcal</div></div>
+</div>
+
+<h2>Last 10 weeks</h2>
+<div class="heat" id="heat"></div>
+<div class="heatlbl">green = goals hit &nbsp;·&nbsp; red = missed &nbsp;·&nbsp; grey = no entry</div>
+
+<h2>Daily grid</h2>
+<div id="grid">Loading…</div>
+
+<h2>My goals</h2>
+<div class="card goals" id="goals">Loading…</div>
+
+<script>
+const DASH = /^(—|–|-|\s*)$/;
+
+async function load() {
+  const [tracker, goals] = await Promise.all([
+    fetch('TRACKER.md').then(r => r.text()),
+    fetch('GOALS.md').then(r => r.text()).catch(() => ''),
+  ]);
+
+  const rows = tracker.split('\n')
+    .filter(l => l.trim().startsWith('|'))
+    .map(l => l.split('|').slice(1, -1).map(c => c.trim()))
+    .filter(c => c.length >= 6 && c[0] !== 'Date' && !/^[-\s|]+$/.test(c[0]))
+    .map(c => ({ date: c[0], exercise: c[1], food: c[2], kcal: c[3], work: c[4], hit: c[5] }));
+
+  const real = rows.filter(r => ![r.exercise, r.food, r.kcal, r.work].every(v => DASH.test(v)));
+  const byDate = Object.fromEntries(real.map(r => [r.date, r]));
+
+  // stats
+  document.getElementById('days').textContent = real.length;
+  const hits = real.filter(r => r.hit.includes('✅')).length;
+  const marked = real.filter(r => /[✅❌]/.test(r.hit)).length;
+  document.getElementById('hitpct').textContent = marked ? Math.round(100*hits/marked) + '%' : '–';
+  const kcals = real.map(r => parseInt(r.kcal.replace(/[^\d]/g, ''), 10)).filter(n => !isNaN(n));
+  document.getElementById('avgkcal').textContent = kcals.length ? Math.round(kcals.reduce((a,b)=>a+b,0)/kcals.length) : '–';
+
+  // streak: consecutive ✅ ending today (or yesterday if today not logged)
+  const iso = d => d.toISOString().slice(0, 10);
+  const today = new Date();
+  let streak = 0, d = byDate[iso(today)] ? new Date(today) : new Date(today - 864e5);
+  while (byDate[iso(d)] && byDate[iso(d)].hit.includes('✅')) { streak++; d = new Date(d - 864e5); }
+  document.getElementById('streak').textContent = streak;
+
+  // heatmap: last 70 days, columns = weeks ending this week
+  const heat = document.getElementById('heat');
+  const start = new Date(today - 69 * 864e5);
+  start.setDate(start.getDate() - start.getDay()); // align to Sunday
+  for (let cur = new Date(start); cur <= today; cur.setDate(cur.getDate() + 1)) {
+    const cell = document.createElement('div');
+    const r = byDate[iso(cur)];
+    if (r) cell.className = r.hit.includes('✅') ? 'hit' : (/❌/.test(r.hit) ? 'miss' : '');
+    cell.title = iso(cur) + (r ? ` — ${r.exercise} / ${r.kcal} kcal` : ' — no entry');
+    heat.appendChild(cell);
+  }
+
+  // table
+  if (!real.length) { document.getElementById('grid').innerHTML = '<p class="sub">No entries yet.</p>'; }
+  else {
+    document.getElementById('grid').innerHTML = '<table><tr><th>Date</th><th>Exercise</th><th>Food</th><th>~kcal</th><th>Work / Study</th><th>Goals</th></tr>' +
+      real.map(r => `<tr><td>${r.date}</td><td>${r.exercise}</td><td>${r.food}</td><td>${r.kcal}</td><td>${r.work}</td><td class="${r.hit.includes('✅')?'hit':(/❌/.test(r.hit)?'miss':'')}">${r.hit}</td></tr>`).join('') +
+      '</table>';
+  }
+
+  // goals: show bullet lines only
+  const bullets = goals.split('\n').filter(l => l.trim().startsWith('-')).map(l => l.trim());
+  document.getElementById('goals').textContent = bullets.length ? bullets.join('\n') : goals.trim() || 'No goals set.';
+}
+
+load().catch(e => { document.getElementById('grid').innerHTML = `<p class="err">Couldn't load TRACKER.md — ${e.message}</p>`; });
+</script>
+</body>
+</html>
