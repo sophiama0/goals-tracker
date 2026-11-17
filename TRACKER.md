@@ -4,7 +4,7 @@ One row per day. Newest on top. The agent fills this in from my texts.
 
 | Date | Exercise | Food | ~kcal | Alcohol | Work / Study | Goals hit |
 |------|----------|------|-------|---------|--------------|-----------|
-| 2026-11-17 | — | Breakfast: 2 soy sauce eggs on toast, large hot latte with whole milk (Greenberry's); Lunch: 1 cup orange chicken (Trader Joe's), 1 cup green grapes | ~1015 | 0 | — | ⏳ in progress |
+| 2026-11-17 | — | Breakfast: 2 soy sauce eggs on toast, large hot latte with whole milk (Greenberry's); Lunch: 1 cup orange chicken (Trader Joe's), 1 cup green grapes; Snack: pita bread with Greek yogurt | ~1310 | 0 | — | ⏳ in progress |
 
 ## Legend
 
