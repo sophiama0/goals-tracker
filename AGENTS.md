@@ -5,8 +5,12 @@ When the user texts you what they did and ate today:
 1. Append (or create) the day's file in `logs/YYYY-MM-DD.md` using the format
    shown in the README.
 2. Update the day's row in `TRACKER.md` (the grid — newest day on top, add a
-   row if the date isn't there). Fill Exercise, Food, ~kcal, Work / Study,
-   and Goals hit.
+   row if the date isn't there). Fill Exercise, Food, ~kcal, Alcohol,
+   Work / Study, and Goals hit.
+   - Food: log exactly what they said they ate (quantities, bread type, etc.)
+     — don't generalize. Note the meal (breakfast/lunch/dinner/snack) if given.
+   - Alcohol: log each drink and quantity; count standard drinks and include
+     their calories. Track a running weekly total (Mon–Sun) in the reply.
 3. Estimate calories for food items when not given; mark them with `~`.
    Sum a daily total.
 4. Compare the day against `GOALS.md`:

@@ -17,7 +17,7 @@ my phone; it starts a session, updates this repo, and replies in-thread.)
 
 ## Structure
 
-- `TRACKER.md` — the grid: one row per day (exercise, food, kcal, work/study)
+- `TRACKER.md` — the grid: one row per day (exercise, food, kcal, alcohol, work/study)
 - `GOALS.md` — my current goals and targets
 - `logs/` — one markdown file per day, in `YYYY-MM-DD` format
 - `AGENTS.md` — instructions for the agent that processes my texts
@@ -33,11 +33,18 @@ See `logs/` for real entries. Format:
 - Ran 3 miles (~300 kcal)
 
 ## Food
-| Item | Calories |
-|------|----------|
-| Chicken burrito | ~650 |
-| Cookie | ~150 |
-| **Total** | **~800** |
+| Meal | Item | Calories |
+|------|------|----------|
+| Lunch | Chicken burrito | ~650 |
+| Snack | Cookie | ~150 |
+| | **Total** | **~800** |
+
+## Alcohol
+- 2 glasses red wine — 2 drinks (~250 kcal)
+- Week to date: 2 drinks
+
+## Work / Study
+- Finished all assignments
 
 ## Notes
 - Felt good, kept streak alive
