@@ -17,6 +17,7 @@ to git, e.g. Devin.)
 
 ## Structure
 
+- `TRACKER.md` — the grid: one row per day (exercise, food, kcal, work/study)
 - `GOALS.md` — my current goals and targets
 - `logs/` — one markdown file per day, in `YYYY-MM-DD` format
 - `AGENTS.md` — instructions for the agent that processes my texts
