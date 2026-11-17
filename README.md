@@ -12,8 +12,8 @@ me disciplined and motivated.
 3. It checks progress against `GOALS.md` and replies with a recap, streaks,
    and encouragement
 
-(Texting integration: TBD — the repo works with any agent that can read/write
-to git, e.g. Devin.)
+(Texting integration: Slack — I message `@Devin` in a dedicated channel from
+my phone; it starts a session, updates this repo, and replies in-thread.)
 
 ## Structure
 
