@@ -1,16 +1,16 @@
 # Goals Tracker
 
-A personal accountability repo. I text my agent from my phone with what I did
-today and what I ate — it logs it here, tracks it against my goals, and keeps
+A personal accountability repo. This is a Slack integration with Devin and it logs it here, tracks it against my goals, and keeps
 me disciplined and motivated.
 
 ## How it works
 
-1. I text the agent: "ran 3 miles, ate chicken burrito + a cookie"
+1. Integrate Slack with Devin and text the agent what you ate today. Text it any exercise and alcohol drank and also what you did to be productive.
 2. The agent appends an entry to `logs/YYYY-MM-DD.md`, estimating calories
-   when needed
+   when needed.
 3. It checks progress against `GOALS.md` and replies with a recap, streaks,
-   and encouragement
+   and encouragement.
+4. It will notify you to log your day if you don't respond by 6PM.
 
 (Texting integration: Slack — I message `@Devin` in a dedicated channel from
 my phone; it starts a session, updates this repo, and replies in-thread.)
