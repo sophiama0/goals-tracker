@@ -15,11 +15,6 @@ me disciplined and motivated.
 (Texting integration: Slack — I message `@Devin` in a dedicated channel from
 my phone; it starts a session, updates this repo, and replies in-thread.)
 
-## See it live
-
-**https://sophiama0.github.io/goals-tracker/** — dashboard that reads this
-repo's data (grid, streak, heatmap, goals). Updates on every agent commit.
-
 ## Structure
 
 - `TRACKER.md` — the grid: one row per day (exercise, food, kcal, alcohol, work/study)
