@@ -4,7 +4,7 @@ One row per day. Newest on top. The agent fills this in from my texts.
 
 | Date | Exercise | Food | ~kcal | Alcohol | Work / Study | Goals hit |
 |------|----------|------|-------|---------|--------------|-----------|
-| 2026-11-23 | — | Breakfast: 2 eggs on toast, some Cheez-Its | ~430 | 0 | — | ⏳ in progress (~1570 kcal left, no movement yet) |
+| 2026-11-23 | spin class 45 min | Breakfast: 2 eggs on toast, some Cheez-Its; Dinner: noodles with steak, broccoli, chicken, kale, some grapes, apples, a little orange; Snack: more Cheez-Its | ~1580 | 0 | — | ✅ (moved ✔, kcal ✔, -~420) |
 | 2026-11-22 | stairmaster 45 min, incline walk 15 min, arm workout 20 min | some leftovers, 2 pastries, McDonald's fries, half a fish filet, half a cheeseburger; Dinner: noodles, veggies, steak, salmon, 2 Ferrero Rocher chocolates | ~2896 | 0 | — | ❌ (moved ✔, kcal over, +~896) |
 | 2026-11-21 | spin class 45 min | 4 eggs on 2 toast, a little trout | ~980 | alcohol, amount not given (~2 est.) | — | ✅ (moved ✔, kcal ✔, -~1020) |
 | 2026-11-20 | spin class 45 min, 9k steps | Breakfast: 2 soy sauce eggs on toast; Lunch: butter chicken; Dinner: some trout, chicken, 2 eggs on toast, 10 french fries | ~1630 | 0 | — | ✅ (moved ✔, kcal ✔, -~370) |
